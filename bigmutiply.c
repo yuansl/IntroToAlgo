@@ -1,17 +1,19 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 
-#define MAXSIZE 1000000
+#define MAXSIZE 1000
+#define swap(x, y) \
+	do { int tmp = x; x = y; y = tmp; } while (0)
 
 static char num[MAXSIZE];
 
-void mutiply(int m, int n)
+char *mutiply(int m, int n)
 {
 	int i, j, m0, n0, s, s0, c, c0, sign;
 
 	memset(num, 0, sizeof(num));
-
 	sign = 1;
 	if (m < 0)
 		sign *= -1;
@@ -36,25 +38,33 @@ void mutiply(int m, int n)
 
 	if (sign < 0)
 		putchar('-');
+	for (j = MAXSIZE - 1; j >= 0; j--)
+		num[j] += '0';
 
-	for (j = MAXSIZE - 1; num[j] == 0; j--)
-		continue;
-	for (; j >= 0; j--)
-		putchar(num[j] + '0');
-	putchar('\n');
+	for (j = MAXSIZE - 1; j >= 0 && num[j] == '0'; j--)
+		num[j] = '\0';
+	if (j < 0) {
+		num[++j] = '0';
+		return num;
+	}
+	for (i = 0; i < j; i++, j--)
+		swap(num[i], num[j]);
+	return num;
 }
 
 /* test-case */
 int main(void)
 {
 	int m, n, i;
+	char *ret;
 
+	srand(time(NULL));
 	i = 0;
-	while (i++ < 1000000) {
-		m = rand() % 10000;
-		n = rand() % 10000;
-		printf("m * n = %d ", m * n);
-		mutiply(m, n);
+	while (i++ < 10) {
+		m = rand() % 1000;
+		n = rand() % 1000;
+		ret = mutiply(m, n);
+		printf("%d * %d = %s\n", m, n, ret);
 	}
 	return 0;
 }
