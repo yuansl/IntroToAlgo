@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
+#include <limits.h>
 
 #define MAXSIZE 1000
 #define swap(x, y) \
@@ -38,6 +39,7 @@ char *mutiply(int m, int n)
 
 	if (sign < 0)
 		putchar('-');
+
 	for (j = MAXSIZE - 1; j >= 0; j--)
 		num[j] += '0';
 
@@ -47,6 +49,7 @@ char *mutiply(int m, int n)
 		num[++j] = '0';
 		return num;
 	}
+	
 	for (i = 0; i < j; i++, j--)
 		swap(num[i], num[j]);
 	return num;
@@ -61,10 +64,11 @@ int main(void)
 	srand(time(NULL));
 	i = 0;
 	while (i++ < 10) {
-		m = rand() % 1000;
-		n = rand() % 1000;
+		m = rand() % 100000000;
+		n = rand() % 100000000;
 		ret = mutiply(m, n);
 		printf("%d * %d = %s\n", m, n, ret);
 	}
+
 	return 0;
 }
